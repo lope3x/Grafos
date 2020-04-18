@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <queue> 
+
 
 #define WHITE 0
 #define GRAY 1
@@ -13,7 +15,6 @@ class Graph{
         int ** adjMatrix;
         int numOfVertex;
         int * colors;
-        int dist;
         int vertexInitial;
         int vertexEnd;
     public:
@@ -27,7 +28,6 @@ class Graph{
             for(int i = 0; i < this->numOfVertex ; i++){
                 memset(adjMatrix[i], 0 ,this->numOfVertex*sizeof(int));
             }
-            dist = 10000000;
             vertexInitial = x1 + y1*8;
             vertexEnd = x2 + y2*8;
         }
@@ -35,38 +35,29 @@ class Graph{
             this->adjMatrix[v1][v2] = 1;
             this->adjMatrix[v2][v1] = 1;
         }
-        void removeEdge(int v1, int v2){
-            this->adjMatrix[v1][v2] = 0;
-            this->adjMatrix[v2][v1] = 0;
-        }
-        void printAdjMatrix(){
-            for(int i = 0; i < this->numOfVertex ; i++){
-                for(int j = 0; j < this->numOfVertex ; j++){
-                    cout<<this->adjMatrix[i][j];
-                }
-                cout<<endl;
-            }
-        }
-        void dfs(){
+       
+        int bfs(){
+            int dist = 0;
             for(int i=0;i<64;i++){
                 this->colors[i]=WHITE;
             }
-            dfs_visit(vertexInitial,0);
-        }
-        int dfs_visit(int vertex,int dist){
-            colors[vertex] = GRAY;
-            if(vertex  == vertexEnd&&dist < this->dist){
-                this->dist = dist;
+            queue<int> Q;
+            int * distances = new int[numOfVertex];
+            memset(distances,0,sizeof(int)*numOfVertex);
+            Q.push(vertexInitial);
+            while(!Q.empty()){
+                int u=Q.front();
+                Q.pop();
+                for(int v = 0; v< this->numOfVertex ; v++){
+                    if(adjMatrix[u][v]==1 && colors[v]==WHITE){
+                        distances[v] = distances[u]+1;
+                        colors[v] = GRAY;
+                        Q.push(v);
+                    }
+                }
+                colors[u] = BLACK;
             }
-            for(int i=0; i < this->numOfVertex ; i++){
-                if(adjMatrix[vertex][i] == 1 && colors[i]==WHITE || colors[i]==GRAY){
-                    dfs_visit(i,dist+1);                }
-            }
-            colors[vertex] = BLACK;
-            return 0;
-        }
-        int getDist() {
-            return this->dist;
+            return distances[vertexEnd];
         }
         void buildHorseGraph(int x, int y){
             int vertexMatrix = x + (y*8);
@@ -110,8 +101,7 @@ class Graph{
 
 int main(){
     string a,b;
-    //while(cin>>a>>b != ){
-        cin>>a>>b;
+    while(cin>>a>>b != NULL ){
          int x1,x2,y1,y2;
         x1 = (a.at(0)-49)%48;
         y1 =  a.at(1) - 49;
@@ -119,12 +109,7 @@ int main(){
         y2 =  b.at(1) - 49;
         Graph * graph = new Graph(64,x1,x2,y1,y2);
         graph->buildHorseGraph(x1,y1);
-
-        graph->dfs();
-        graph->printAdjMatrix();
-        cout<<graph->getDist();
-
-
-    //}
+        cout<<"To get from "<<a<<" to "<<b<<" takes "<<graph->bfs()<<" knight moves."<<endl;
+    }
     return 0;
 }
