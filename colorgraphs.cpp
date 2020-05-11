@@ -39,7 +39,7 @@ class Graph{
             for(int i=1; i < this->numOfVertex ; i++){
                 for(int j=1 ; j < this->numOfVertex ; j++){
                     if(this->adjMatrix[i][j]==0&&this->colors[i] != this->colors[j] && P>0 && i!=j){
-                        this->adjMatrix[i][j] = 1;
+                        this->insertEdge(i,j);
                         P--;
                     }
                 }
