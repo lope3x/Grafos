@@ -16,6 +16,9 @@ class Graph{
         int * colors;
         bool connectivity;
     public:
+        /*
+            Construtor da classe, recebe o numero de vértices como parametro
+        */
         Graph(int numOfVertex){
             this-> numOfVertex = numOfVertex+1;
             adjMatrix = new int*[this->numOfVertex];
@@ -29,13 +32,22 @@ class Graph{
             memset(colors,WHITE,sizeof(int)*this->numOfVertex);
             this->connectivity = true;
         }
+        /*
+            Recebe dois vértices como parametro e insere uma aresta que vai de v1 para v2
+        */
         void insertEdge(int v1,int v2){
             adjMatrix[v1][v2] = 1;
         }
+        /*
+            Recebe dois vértices como parametro e insere uma aresta que vai de v1 para v2 e de v2 para v1
+        */
         void insertDoubleEdge(int v1,int v2){
             adjMatrix[v1][v2] = 1;
             adjMatrix[v2][v1] = 1;
         }
+        /*
+            Metodo que verifica se o grafo é conexo
+        */
         void visitaGeral(){
             for(int i=1 ; this->connectivity && i<this->numOfVertex; i++){
                 memset(colors,WHITE,sizeof(int)*this->numOfVertex);
@@ -44,6 +56,9 @@ class Graph{
             }
             cout<<connectivity<<endl;;
         }
+        /*
+            Metodo que executa o algoritmo busca em largura
+        */
         void bfs(int s){
             queue<int> Q;
             int * distances = new int[this->numOfVertex];
@@ -62,7 +77,9 @@ class Graph{
                 colors[u] = BLACK;
             }
         }
-
+        /*
+            Metodo que verifica se a partir de um vertice é possivel chegar em todos os outros
+        */
         void verifyConectivity(){
             for(int i = 1;i< this->numOfVertex ; i++){
                 if(colors[i]==WHITE){
@@ -77,10 +94,10 @@ class Graph{
 
 int main(){
     int N,M,V,W,P;
-    
+
     cin>>N>>M;
     while(N!=0&&M!=0){
-    
+        //Constroi um grafo baseado nas informações da entrada padrão
         Graph * graph = new Graph(N);
         for(int i=0;i<M;i++){
             cin>>V>>W>>P;

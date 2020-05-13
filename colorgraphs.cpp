@@ -16,6 +16,10 @@ class Graph{
         int numOfColors;
         int * colorsVisit;
     public:
+        /*
+            Cria um grafo com o numero de vértices passados
+            
+        */
         Graph(int numOfVertex,int numOfColors){
             this->numOfVertex = numOfVertex+1;
             this->numOfColors = numOfColors+1;
@@ -28,13 +32,22 @@ class Graph{
             }
             memset(colorsVisit,WHITE,sizeof(int)*this->numOfVertex);
         }
+        /*
+            Seta a cor de um vértice do grafo
+        */
         void setColor(int vertex,int color){
             this->colors[vertex] = color;
         }
+        /*
+            Insere uma aresta no grafo
+        */
         void insertEdge(int v1 , int v2){
             this->adjMatrix[v1][v2] = 1;
             this->adjMatrix[v2][v1] = 1;
         }
+        /*
+            Verifica se é possível inserir a quantidade de arestas passadas como parametros no grafo.
+        */
         bool verifyPossibleInsertEdge(int P){
             for(int i=1; i < this->numOfVertex ; i++){
                 for(int j=1 ; j < this->numOfVertex ; j++){
@@ -46,6 +59,9 @@ class Graph{
             }
             return (P==0) ? true : false;
         }
+        /*
+            Executa o algoritmo busca em profundidade
+        */
         void bfs(int s){
             queue<int> Q;
             Q.push(s);
@@ -61,7 +77,9 @@ class Graph{
                 colorsVisit[u] = BLACK;
             }
         }
-
+        /*
+            Verifica que o grafo é conexo
+        */
         bool verifyConectivity(){
             for(int i = 1;i< this->numOfVertex ; i++){
                 if(colorsVisit[i]==WHITE){

@@ -18,6 +18,9 @@ class Graph{
         vector<Color> colors;
         int numOfComponents;
     public:
+        /*
+            Constroi um grafo com o numero de vertices passados
+        */
         Graph(int numOfVertex){
             this->numOfVertex = numOfVertex;
             adjMatrix = new int*[this->numOfVertex];
@@ -37,10 +40,16 @@ class Graph{
     }
         
 };
+/*
+    Insere uma aresta no grafo
+*/
 void Graph::insertEdge(int v1,int v2){
     this->adjMatrix[v1][v2] = 1;
     this->adjMatrix[v2][v1] = 1;
 }
+/*
+    Executa o algoritmo busca em profundidade e printa os componentes conexos do grafo
+*/
 void Graph::dfs(){
     for(int vertex = 0;vertex< this->numOfVertex ; vertex++){
         if(colors[vertex]==WHITE){
@@ -55,6 +64,9 @@ void Graph::dfs(){
         }
     }
 }
+/*
+    Executa o dfs_visit do algoritmo busca em profundidade e retorna um vector com os elementos de um componente
+*/
 vector<int> Graph::dfs_visit(int vertex,vector<int> elements){
     if(colors[vertex]== WHITE){
         elements.push_back(vertex);
@@ -70,11 +82,15 @@ vector<int> Graph::dfs_visit(int vertex,vector<int> elements){
     colors[vertex] = BLACK;
     return elements;
 }
-
+/*
+    Converte o caractere passado para o numero correspondente
+*/
 int charToNum(char c){
     return c-97;
 }
-
+/*
+    Converte o numero passado para o caractere correspondente
+*/
 char Graph::numToChar(int n){
     return n+97;
 }
